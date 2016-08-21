@@ -33,7 +33,7 @@ def make_api(func):
     def wrapper(**kwargs):
         kwargs = {to_camel(key): value for key, value in kwargs.items()}
         func_name = to_camel(func.__name__)
-        func()
+        func(**kwargs)
         return get_random(func_name, kwargs)
 
     return wrapper
@@ -73,6 +73,7 @@ def generate_integers(*, n, min, max, replacement=True, base=10):
     :param base: Specifies the base that will be used to display the numbers. Values allowed are 2, 8, 10 and 16.
     :return:
     """
+    print('geting integers')
 
 
 @make_api
@@ -145,7 +146,7 @@ def get_usage():
 
 
 if __name__ == '__main__':
-    # print(generate_integers(min=1, max=10, n=5))
+    print(generate_integers(n=5, min=1, max=10))
     # print(generate_decimal_fractions(n=10, decimal_places=10))
     # print(generate_gaussians(n=10, mean=100, standard_deviation=99, significant_digits=5))
-    print(get_usage())
+    # print(get_usage())
