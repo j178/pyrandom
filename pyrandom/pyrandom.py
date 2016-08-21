@@ -1,6 +1,7 @@
 # Author: John Jiang
 # Date  : 2016/8/21
 from random import randint
+
 import requests
 
 try:
@@ -10,9 +11,8 @@ except ImportError:
 else:
     API_KEY = config.key
 
-__all__ = ['set_api_key', 'generate_integers', 'generate_gaussians', 'generate_decimal_fractions', 'generate_strings']
-
-api_url = 'https://api.random.org/json-rpc/1/invoke'
+__all__ = ['set_api_key', 'generate_integers', 'generate_gaussians', 'generate_decimal_fractions', 'generate_strings',
+           'generate_UUIDs', 'generate_blobs']
 
 
 def set_api_key(key):
@@ -49,14 +49,16 @@ def get_random(method, params=None, id=None):
         'id': id
     }
     data['params'].update(params)
+
+    api_url = 'https://api.random.org/json-rpc/1/invoke'
     r = requests.post(api_url, json=data)
-    try:
-        j = r.json()
-    except Exception:
-        pass
+    j = r.json()
     if 'error' in j:
-        pass
-    return j['result']['random']['data']
+        raise AttributeError(j['error']['message'])
+    try:
+        return j['result']['random']['data']
+    except KeyError:
+        return j['result']
 
 
 @make_api
@@ -143,6 +145,7 @@ def get_usage():
 
 
 if __name__ == '__main__':
-    print(generate_integers(min=1, max=10, n=5))
+    # print(generate_integers(min=1, max=10, n=5))
     # print(generate_decimal_fractions(n=10, decimal_places=10))
     # print(generate_gaussians(n=10, mean=100, standard_deviation=99, significant_digits=5))
+    print(get_usage())

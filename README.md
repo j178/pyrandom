@@ -1,5 +1,5 @@
 #pyrandom
-> Convenient Python lib for [random.org](https://random.org)
+Convenient Python lib for [random.org](https://random.org)
 
 ## Requirements
 - requests
