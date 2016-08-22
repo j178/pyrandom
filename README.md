@@ -6,7 +6,7 @@ Convenient Python lib for [random.org](https://random.org)
 
 ## Usage
 1. You need to get a api key from [random.org](https://api.random.org/api-keys/beta)
-2. Clone this repository or install this package through `pip install pyrandom`
+2. Clone this repository or install this package through
 3. Import this module and code
     ```python
     import pyrandom
@@ -15,4 +15,3 @@ Convenient Python lib for [random.org](https://random.org)
 
     nums = pyrandom.generate_integers(n=10, min=1, max=1000)
     ```
-
