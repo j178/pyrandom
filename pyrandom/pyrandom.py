@@ -11,9 +11,12 @@ except ImportError:
 else:
     API_KEY = config.key
 
-__all__ = ['set_api_key', 'generate_integers', 'generate_gaussians', 'generate_decimal_fractions', 'generate_strings',
-           'generate_UUIDs', 'generate_blobs']
+__all__ = ['set_api_key', 'generate_integers', 'generate_gaussians', 
+           'generate_decimal_fractions', 'generate_strings',
+           'generate_UUIDs', 'generate_blobs'
+          ]
 
+API_URL = 'https://api.random.org/json-rpc/2/invoke'
 
 def set_api_key(key):
     global API_KEY
@@ -30,10 +33,11 @@ def to_camel(key):
 
 
 def make_api(func):
+    func_name = to_camel(func.__name__)
+    
     def wrapper(**kwargs):
-        kwargs = {to_camel(key): value for key, value in kwargs.items()}
-        func_name = to_camel(func.__name__)
         func(**kwargs)
+        kwargs = {to_camel(key): value for key, value in kwargs.items()}
         return get_random(func_name, kwargs)
 
     return wrapper
@@ -50,8 +54,7 @@ def get_random(method, params=None, id=None):
     }
     data['params'].update(params)
 
-    api_url = 'https://api.random.org/json-rpc/1/invoke'
-    r = requests.post(api_url, json=data)
+    r = requests.post(API_URL, json=data)
     j = r.json()
     if 'error' in j:
         raise AttributeError(j['error']['message'])
@@ -73,7 +76,6 @@ def generate_integers(*, n, min, max, replacement=True, base=10):
     :param base: Specifies the base that will be used to display the numbers. Values allowed are 2, 8, 10 and 16.
     :return:
     """
-    print('geting integers')
 
 
 @make_api
@@ -141,7 +143,7 @@ def generate_blobs(*, n, size, format='base64'):
 @make_api
 def get_usage():
     """
-     Get the information related to the the usage of a given API key
+    get the information related to the the usage of a given API key
     """
 
 
